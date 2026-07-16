@@ -590,35 +590,56 @@
 @media(max-width:500px){#chatbot-panel{width:calc(100vw - 32px);right:16px;height:50vh}}
 </style>
 <script>
-let chatConv = null;
+const FAQ=[{k:['hola','buenas','buenos dias','buenas tardes','buenas noches','hey','saludos'],v:'¡Hola! Soy SecBot, tu asistente de ciberseguridad. Puedes preguntarme sobre ciberacoso, cómo prevenirlo, señales de alerta, cómo reportar en redes sociales, o cualquier duda de seguridad digital. ¿En qué puedo ayudarte?'},
+{k:['que es ciberacoso','que es el ciberacoso','definicion','significa ciberacoso','cyberbullying','acoso virtual'],v:'El ciberacoso o cyberbullying es el uso de tecnologías digitales (redes sociales, mensajería, juegos en línea) para acosar, amenazar, humillar o molestar a una persona de forma repetida e intencional. Puede incluir difamación, suplantación de identidad, exclusión social, ciberacoso sexual y más. Afecta a 1 de cada 3 jóvenes y las consecuencias pueden ser graves: ansiedad, depresión, aislamiento e incluso ideación suicida.'},
+{k:['como prevenir','como evitarlo','como protegerme','evitar','prevenir','protegerme de un acosador','medidas de prevencion'],v:'Para prevenir el ciberacoso: 1) Educa sobre seguridad digital: no compartir contraseñas, no aceptar desconocidos, pensar antes de publicar. 2) Mantén comunicación abierta con tus hijos. 3) Configura la privacidad en todas las plataformas. 4) Establece reglas familiares sobre uso de tecnología. 5) Supervisa activamente las actividades en línea. 6) Fomenta la empatía digital: no hagas en línea lo que no harías en persona.'},
+{k:['senales','señales de alerta','como saber si','detectar','indicadores','sintomas'],v:'Señales de alerta de ciberacoso: 1) Cambios en el uso del dispositivo (aumento/disminución repentina). 2) Reacciones emocionales: ansiedad, tristeza o enojo al usar dispositivos. 3) Oculta la pantalla cuando alguien se acerca. 4) Cierre y creación frecuente de cuentas. 5) Aislamiento social y pérdida de interés en actividades. 6) Problemas escolares: bajas calificaciones, ausentismo. Si notas varias de estas señales, es importante hablar con la persona y buscar ayuda profesional.'},
+{k:['como reportar','reportar','denunciar','donde reporto'],v:'Para reportar ciberacoso en redes sociales: Instagram: opción de 3 puntos → Reportar. Facebook: flecha hacia abajo → Reportar publicación. TikTok: mantener presionado → Reportar. Twitter/X: 3 puntos → Reportar. WhatsApp: 3 puntos → Reportar → Reportar contacto. YouTube: 3 puntos → Reportar. Guarda siempre capturas de pantalla como evidencia antes de reportar. Si hay amenazas físicas, contacta a la policía (911 en Panamá).'},
+{k:['como bloquear','bloquear','silenciar'],v:'Para bloquear a alguien en redes sociales: Instagram: perfil → 3 puntos → Bloquear. Facebook: perfil → 3 puntos → Bloquear. TikTok: perfil → 3 puntos → Bloquear. Twitter/X: perfil → 3 puntos → Bloquear. WhatsApp: chat → 3 puntos → Más → Bloquear. YouTube: comentario → 3 puntos → Ocultar usuario de este canal. Bloquear evita que la persona te contacte o vea tu perfil.'},
+{k:['que hacer si','sufro acoso','victima','pasos a seguir','ayuda','me estan acosando'],v:'Si estás sufriendo ciberacoso: 1) NO respondas al acosador — busca reacción. 2) Guarda evidencia: capturas de pantalla, fechas, URLs. 3) Bloquea al acosador en todas las plataformas. 4) Reporta el contenido a la red social. 5) Habla con alguien de confianza: padres, amigos, profesor. 6) Busca ayuda profesional: línea de ayuda +507 800-1725 (Panamá). 7) Si hay amenazas físicas o de violencia, llama al 911. No estás solo, la ayuda está disponible.'},
+{k:['tipos de ciberacoso','formas de acoso','tipos de acoso','exclusion','difamacion','suplantacion','sexting','grooming','ciberacoso sexual'],v:'Principales tipos de ciberacoso: • Exclusión: bloquear o ignorar deliberadamente a alguien en grupos. • Difamación: publicar rumores o información falsa. • Suplantación: crear perfiles falsos haciéndose pasar por la víctima. • Ciberacoso sexual: enviar contenido sexual no deseado. • Sexting: compartir imágenes íntimas sin consentimiento. • Grooming: adulto que se gana la confianza de un menor para abusar sexualmente. • Doxing: publicar información personal privada sin permiso.'},
+{k:['leyes','ley','panama','paname','legal','abogado','denuncia penal','delito'],v:'En Panamá, la Ley 81 de 2019 regula los delitos informáticos y el ciberacoso. El Código Penal panameño también tipifica el acoso, las amenazas y la difamación. Puedes contactar a Legal IT Abogados (Lia P. Hernández) para asesoría especializada en Derecho Digital. Línea de ayuda: +507 800-1725. Si estás en peligro inmediato, llama al 911 (104 para policía en Panamá).'},
+{k:['padres','consejos para padres','ayudar a mi hijo','mi hijo','control parental'],v:'Consejos para padres: 1) Mantén comunicación abierta y sin juicios. 2) Conoce las plataformas que usan tus hijos. 3) Configura control parental en todos los dispositivos. 4) Establece reglas claras: horarios, apps permitidas, zonas libres de pantallas. 5) Enséñales a no compartir información personal. 6) Si sospechas ciberacoso: escucha sin juzgar, guarda evidencia, bloquea al acosador, reporta a la plataforma y contacta a la escuela o autoridades si es necesario.'},
+{k:['privacidad','configuracion','seguridad','como protegerme','proteger mi cuenta','2fa','autenticacion','contraseña'],v:'Consejos de privacidad y seguridad: 1) Usa contraseñas fuertes y diferentes para cada cuenta. 2) Activa la autenticación de dos factores (2FA) en todas las plataformas. 3) Revisa quién puede ver tu información personal. 4) No aceptes solicitudes de amistad de desconocidos. 5) No compartas tu ubicación en tiempo real. 6) Revisa periódicamente las aplicaciones conectadas a tus cuentas. 7) Cierra sesión en dispositivos compartidos.'},
+{k:['gracias','muchas gracias','thanks','thank'],v'¡De nada! Estoy aquí para ayudarte con cualquier duda sobre ciberseguridad y prevención del ciberacoso. Recuerda que la línea de ayuda en Panamá es +507 800-1725. ¡Cuídate!'},
+{k:['adios','chao','bye','nos vemos','hasta luego'],v:'¡Hasta luego! Recuerda que la seguridad digital es responsabilidad de todos. Si necesitas ayuda, la línea de prevención del ciberacoso está disponible 24/7: +507 800-1725 (Panamá). ¡Cuídate!'}];
+function getFAQreply(msg){
+  const m=msg.toLowerCase();
+  for(const item of FAQ) for(const kw of item.k) if(m.includes(kw)) return item.v;
+  return '';
+}
 function toggleChat(){
-  const p = document.getElementById('chatbot-panel');
+  const p=document.getElementById('chatbot-panel');
   p.classList.toggle('open');
   if(p.classList.contains('open')) p.querySelector('#chat-input').focus();
 }
-async function sendChat(){
-  const input = document.getElementById('chat-input');
-  const msg = input.value.trim();
+function sendChat(){
+  const input=document.getElementById('chat-input');
+  const msg=input.value.trim();
   if(!msg) return;
-  input.value = '';
-  const msgs = document.getElementById('chatbot-msgs');
-  msgs.innerHTML += `<div class="chat-msg user">${escHtml(msg)}</div>`;
-  msgs.innerHTML += `<div class="chat-msg loading" id="chat-loading">Pensando...</div>`;
-  msgs.scrollTop = msgs.scrollHeight;
-  try{
-    const r = await fetch('http://localhost:8080/api/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:msg, conversation_id: chatConv, use_knowledge_base: true})
-    });
-    const d = await r.json();
-    chatConv = d.conversation_id;
+  input.value='';
+  const msgs=document.getElementById('chatbot-msgs');
+  msgs.innerHTML+=`<div class="chat-msg user">${escHtml(msg)}</div>`;
+  msgs.innerHTML+=`<div class="chat-msg loading" id="chat-loading">Pensando...</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+  const ctrl=new AbortController();
+  const tmr=setTimeout(()=>ctrl.abort(),3000);
+  fetch('/v1/chat',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({message:msg}),
+    signal:ctrl.signal
+  }).then(r=>r.json()).then(d=>{
+    clearTimeout(tmr);
     document.getElementById('chat-loading').remove();
-    msgs.innerHTML += `<div class="chat-msg bot">${escHtml(d.reply)}</div>`;
-  }catch(e){
-    document.getElementById('chat-loading').remove();
-    msgs.innerHTML += `<div class="chat-msg bot">⚠️ Error de conexión. Asegúrate de que el servidor de CyberAI esté corriendo en el puerto 8080.</div>`;
-  }
-  msgs.scrollTop = msgs.scrollHeight;
+    msgs.innerHTML+=`<div class="chat-msg bot">${escHtml(d.reply)}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  }).catch(()=>{
+    clearTimeout(tmr);document.getElementById('chat-loading').remove();
+    let reply=getFAQreply(msg);
+    if(!reply)reply='No entendí bien tu pregunta. Puedes preguntarme sobre: ¿qué es el ciberacoso? • cómo prevenirlo • señales de alerta • cómo reportar • cómo bloquear • leyes en Panamá • consejos para padres • qué hacer si sufres acoso. O simplemente dime "hola" para empezar.';
+    msgs.innerHTML+=`<div class="chat-msg bot">${escHtml(reply)}</div>`;
+    msgs.scrollTop=msgs.scrollHeight;
+  });
   document.getElementById('chat-input').focus();
 }
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}

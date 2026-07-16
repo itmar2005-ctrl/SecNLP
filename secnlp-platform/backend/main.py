@@ -43,11 +43,12 @@ async def metrics_middleware(request, call_next):
         REQ_COUNT.inc()
     return response
 
-from backend.routers import moderation, feedback, metrics
+from backend.routers import moderation, feedback, metrics, chat
 
 app.include_router(moderation.router)
 app.include_router(feedback.router)
 app.include_router(metrics.router)
+app.include_router(chat.router)
 
 FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "frontend")
 if os.path.exists(FRONTEND_DIR):
